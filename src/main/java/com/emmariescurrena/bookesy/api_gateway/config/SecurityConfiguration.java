@@ -20,11 +20,6 @@ import org.springframework.security.web.server.authentication.logout.DelegatingS
 import org.springframework.security.web.server.authentication.logout.SecurityContextServerLogoutHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.WebSessionServerLogoutHandler;
-import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
-import org.springframework.security.web.server.csrf.CsrfWebFilter;
-import org.springframework.security.web.server.util.matcher.AndServerWebExchangeMatcher;
-import org.springframework.security.web.server.util.matcher.NegatedServerWebExchangeMatcher;
-import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
@@ -48,8 +43,8 @@ public class SecurityConfiguration {
             .authorizeExchange(authz -> authz
                 .pathMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .anyExchange().authenticated()
-            )
-            .csrf(csrf -> csrf
+            ).csrf(csrf -> csrf.disable())
+            /*.csrf(csrf -> csrf
                 .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
                 .requireCsrfProtectionMatcher(
                     new AndServerWebExchangeMatcher(
@@ -60,6 +55,7 @@ public class SecurityConfiguration {
                     )
                 )
             )
+            */
             .oauth2Login(oauth2 -> oauth2
                 .authorizationRequestResolver(authorizationRequestResolver(this.clientRegistrationRepository))
             )
